@@ -5,19 +5,10 @@ USE secure_file_share;
 -- USERS
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-
-    -- Original username (for display)
-    username VARCHAR(50) NOT NULL,
-
-    -- Normalized username (used for login, sharing, uniqueness)
-    username_normalized VARCHAR(50) NOT NULL UNIQUE,
-
-    -- Secure password hash (bcrypt or equivalent)
+    username VARCHAR(50) NOT NULL,              -- display only
+    username_normalized VARCHAR(50) COLLATE utf8mb4_bin NOT NULL;
     password_hash VARCHAR(255) NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE (username)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- FILES (OWNERSHIP)

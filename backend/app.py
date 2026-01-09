@@ -9,7 +9,9 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev_secret_key")
 
 
+# -------------------------
 # Username & Password Rules
+# -------------------------
 USERNAME_REGEX = re.compile(r'^[A-Za-z0-9_]{4,16}$')
 
 def normalize_username(username):
@@ -30,7 +32,9 @@ def is_valid_password(password):
     return True
 
 
+# -------------------------
 # Login Required Decorator
+# -------------------------
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -40,7 +44,9 @@ def login_required(func):
     return wrapper
 
 
+# -------------------------
 # Index
+# -------------------------
 @app.route("/")
 def index():
     if "user_id" in session:
@@ -48,7 +54,9 @@ def index():
     return redirect(url_for("login"))
 
 
+# -------------------------
 # Register
+# -------------------------
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -61,15 +69,15 @@ def register():
             return redirect(url_for("register"))
 
         if not is_valid_username(username):
-            flash("Invalid username format")
+            flash("Invalid username or password")
             return redirect(url_for("register"))
 
         if not is_valid_password(password):
-            flash("Invalid password format")
+            flash("Invalid username or password")
             return redirect(url_for("register"))
 
         if password != confirm:
-            flash("Passwords do not match")
+            flash("Invalid username or password")
             return redirect(url_for("register"))
 
         username_norm = normalize_username(username)
@@ -87,14 +95,17 @@ def register():
             flash("Registration successful. Please login.")
             return redirect(url_for("login"))
 
-        except Exception:
+        except Exception as e:
+            print("DB ERROR:", e)
             flash("Invalid username or password")
             return redirect(url_for("register"))
 
     return render_template("register.html")
 
 
+# -------------------------
 # Login
+# -------------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -125,14 +136,18 @@ def login():
     return render_template("login.html")
 
 
+# -------------------------
 # Dashboard
+# -------------------------
 @app.route("/dashboard")
 @login_required
 def dashboard():
     return render_template("dashboard.html", username=session.get("username"))
 
 
+# -------------------------
 # Logout
+# -------------------------
 @app.route("/logout")
 @login_required
 def logout():
@@ -140,7 +155,9 @@ def logout():
     return redirect(url_for("login"))
 
 
+# -------------------------
 # Entry
+# -------------------------
 if __name__ == "__main__":
     debug = os.getenv("FLASK_DEBUG", "false").lower() == "true"
     app.run(debug=debug)
