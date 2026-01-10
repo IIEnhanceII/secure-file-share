@@ -49,6 +49,36 @@ input {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.file-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.file-name small {
+  color: #666;
+  font-size: 12px;
+}
+
+.expired {
+  color: #c62828;
+  font-weight: 600;
+}
+
 .toast {
   position: fixed;
   top: 20px;
@@ -77,12 +107,4 @@ input {
 
 .toast.error {
   background: #c62828;
-}
-
-ul {
-  padding-left: 18px;
-}
-
-li {
-  margin-bottom: 6px;
 }

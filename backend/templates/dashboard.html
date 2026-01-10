@@ -14,6 +14,7 @@
 
 <div class="container">
 
+  <!-- OPTIONS -->
   <div class="card" style="width:20%">
     <h3>Options</h3>
     <button disabled>Upload File</button><br><br>
@@ -21,6 +22,7 @@
     <button disabled>Shared With Me</button>
   </div>
 
+  <!-- MY FILES -->
   <div class="card" style="width:50%">
     <h3>Upload File</h3>
 
@@ -29,18 +31,18 @@
 
     <hr>
 
-    <h3>Recently Uploaded</h3>
-    <ul id="fileList"></ul>
+    <h3>My Files</h3>
+    <ul id="fileList" class="file-list"></ul>
   </div>
 
+  <!-- SHARED FILES -->
   <div class="card" style="width:30%">
-    <h3>Shared Files</h3>
-    <div id="sharedFiles">Coming soon</div>
+    <h3>Shared With Me</h3>
+    <ul id="sharedFileList" class="file-list"></ul>
   </div>
 
 </div>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
-
 </body>
 </html>
