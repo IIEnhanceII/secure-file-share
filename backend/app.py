@@ -226,6 +226,22 @@ def _handle_upload(json_response=False):
     if not file_bytes:
         return jsonify({"error": "Empty file"}), 400
 
+    # 🔐 Validate session user exists in DB
+    with db_cursor() as cursor:
+        cursor.execute(
+            "SELECT id FROM users WHERE id = %s",
+            (session.get("user_id"),)
+        )
+        user = cursor.fetchone()
+
+    if not user:
+        # Invalid / stale session → force re-login
+        session.clear()
+        return jsonify({
+            "error": "Session expired. Please log in again."
+        }), 401
+
+    # Encrypt file
     encrypted_data = encrypt_bytes(file_bytes)
 
     stored_filename = f"{uuid.uuid4().hex}.bin"
@@ -234,6 +250,7 @@ def _handle_upload(json_response=False):
     with open(storage_path, "wb") as f:
         f.write(encrypted_data)
 
+    # Insert metadata (now guaranteed safe)
     with db_cursor() as cursor:
         cursor.execute(
             """
