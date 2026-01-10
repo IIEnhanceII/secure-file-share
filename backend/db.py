@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from contextlib import contextmanager
 
+# Load environment variables from .env
 load_dotenv()
-
 
 def get_db_connection():
     """
@@ -32,8 +32,11 @@ def get_db_connection():
 def db_cursor(dictionary=True):
     """
     Context manager for database cursor usage.
-    Automatically commits on success and rolls back on failure.
-    Ensures cursor and connection are always closed.
+
+    - Automatically commits on success
+    - Rolls back on failure
+    - Always closes cursor and connection
+    - Supports dictionary or tuple cursors
     """
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=dictionary)
